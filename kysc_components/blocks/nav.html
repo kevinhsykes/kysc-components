@@ -1,2 +1,34 @@
-{# nav block — scaffold placeholder, replaced in Sprint 2 with the real nav #}
-<nav class="kysc-nav">Hello from nav block</nav>
+{#
+  nav block — responsive top nav with mobile hamburger.
+
+  Args:
+    items  (list[dict]): required. Each dict: {"label": str, "href": str}.
+    brand  (dict):       required. {"label": str, "href": str}.
+
+  Mobile menu uses a checkbox-hack toggle (no JS required).
+#}
+{% macro nav(items, brand) -%}
+<nav class="kysc-nav bg-brand-bg border-b border-brand-muted">
+  <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between h-16">
+    <a href="{{ brand.href }}" class="text-brand-fg font-semibold text-lg">{{ brand.label }}</a>
+    <input type="checkbox" id="kysc-nav-toggle" class="peer hidden" aria-hidden="true">
+    <label for="kysc-nav-toggle"
+           class="md:hidden cursor-pointer text-brand-fg"
+           aria-label="Toggle navigation">
+      <span class="block w-6 h-0.5 bg-current mb-1"></span>
+      <span class="block w-6 h-0.5 bg-current mb-1"></span>
+      <span class="block w-6 h-0.5 bg-current"></span>
+    </label>
+    <ul class="hidden md:flex gap-6">
+      {% for item in items %}
+      <li><a href="{{ item.href }}" class="text-brand-fg hover:text-brand-accent">{{ item.label }}</a></li>
+      {% endfor %}
+    </ul>
+  </div>
+  <ul class="md:hidden hidden peer-checked:flex flex-col gap-2 px-4 pb-4 bg-brand-bg">
+    {% for item in items %}
+    <li><a href="{{ item.href }}" class="block py-2 text-brand-fg hover:text-brand-accent">{{ item.label }}</a></li>
+    {% endfor %}
+  </ul>
+</nav>
+{%- endmacro %}

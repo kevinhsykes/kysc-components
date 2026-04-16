@@ -1,0 +1,24 @@
+{#
+  hero block — full-width hero with headline, subhead, single CTA.
+
+  Args:
+    headline  (str):        required.
+    subhead   (str):        required.
+    cta_text  (str):        required.
+    cta_href  (str):        required.
+    bg_image  (str | None): optional background image URL.
+#}
+{% macro hero(headline, subhead, cta_text, cta_href, bg_image=None) -%}
+<section class="kysc-hero relative bg-brand-bg"
+         {% if bg_image %}style="background-image: url('{{ bg_image }}'); background-size: cover; background-position: center;"{% endif %}>
+  {% if bg_image %}<div class="absolute inset-0 bg-black/50"></div>{% endif %}
+  <div class="relative max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-24 text-center">
+    <h1 class="text-4xl sm:text-5xl font-bold {% if bg_image %}text-white{% else %}text-brand-fg{% endif %}">{{ headline }}</h1>
+    <p class="mt-4 text-lg {% if bg_image %}text-white/90{% else %}text-brand-fg/80{% endif %}">{{ subhead }}</p>
+    <a href="{{ cta_href }}"
+       class="mt-8 inline-block rounded-md bg-brand-accent px-6 py-3 font-medium text-white hover:bg-brand-accent/90">
+      {{ cta_text }}
+    </a>
+  </div>
+</section>
+{%- endmacro %}

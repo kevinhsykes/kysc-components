@@ -1,5 +1,5 @@
-__version__ = "0.1.0"
+__version__ = "0.2.0"
 
-from kysc_components.registry import blocks
+from kysc_components.registry import block_schema, blocks
 
-__all__ = ["__version__", "blocks"]
+__all__ = ["__version__", "blocks", "block_schema"]

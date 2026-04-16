@@ -2,7 +2,7 @@
 
 Shared Jinja + Tailwind component library for the kevinsykes.ai ecosystem — powers the main site, demo generator, and per-client exported sites.
 
-**Status:** v0.1.0 — scaffold. Only one trivial block (`nav`) ships; full block set arrives in Sprint 2.
+**Status:** v0.2.0 — three real blocks ship (`nav`, `hero`, `footer`) plus a Tailwind preset. More blocks + templates arrive with later tags.
 
 ## Ownership
 
@@ -15,14 +15,65 @@ This repo lives under the `kevinhsykes` personal GitHub account for now. A `kysc
 Pin to an exact tag — never use `main`:
 
 ```bash
-pip install git+https://github.com/kevinhsykes/kysc-components.git@v0.1.0
+pip install git+https://github.com/kevinhsykes/kysc-components.git@v0.2.0
 ```
 
 In `requirements.txt`:
 
 ```
-kysc_components @ git+https://github.com/kevinhsykes/kysc-components.git@v0.1.0
+kysc_components @ git+https://github.com/kevinhsykes/kysc-components.git@v0.2.0
 ```
+
+## Blocks (v0.2.0)
+
+All blocks are Jinja macros. Import and call from your template:
+
+```jinja
+{% import 'nav.html' as nav_block %}
+{% import 'hero.html' as hero_block %}
+{% import 'footer.html' as footer_block %}
+
+{{ nav_block.nav(
+     items=[{"label": "About", "href": "/about"}, {"label": "Contact", "href": "/contact"}],
+     brand={"label": "Kevin Sykes", "href": "/"}) }}
+
+{{ hero_block.hero(
+     headline="AI consulting that ships",
+     subhead="Nights-and-weekends operator, daylight delivery.",
+     cta_text="Get in touch",
+     cta_href="/contact",
+     bg_image=None) }}
+
+{{ footer_block.footer(
+     copyright="(c) 2026 Kevin Sykes",
+     links=[
+       {"heading": "Work", "items": [{"label": "Projects", "href": "/projects"}]},
+       {"heading": "More", "items": [{"label": "Blog", "href": "/blog"}]},
+     ]) }}
+```
+
+### Signatures
+
+| Block | Required | Optional |
+|-------|----------|----------|
+| `nav(items, brand)` | `items` (list of `{label, href}`), `brand` (`{label, href}`) | — |
+| `hero(headline, subhead, cta_text, cta_href, bg_image=None)` | `headline`, `subhead`, `cta_text`, `cta_href` | `bg_image` |
+| `footer(copyright, links)` | `copyright` (str), `links` (list of `{heading, items: [{label, href}]}`) | — |
+
+`kysc_components.registry.block_schema(name)` returns the same `{required, optional}` dict at runtime.
+
+## Tailwind preset
+
+Extend from your consumer `tailwind.config.js`:
+
+```js
+module.exports = {
+  presets: [require('kysc_components/tailwind/preset.js')],
+  content: ['./templates/**/*.html', /* include blocks you import */],
+};
+```
+
+The preset adds `brand.{bg,fg,muted,accent}` colors and `kysc-gutter` / `kysc-section` spacing tokens. Override any key in your own config — Tailwind merges shallowly per key.
 
 ## Semver discipline
 

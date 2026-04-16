@@ -1,0 +1,31 @@
+{#
+  footer block — Tailwind footer with link columns + copyright.
+
+  Args:
+    copyright (str):        required. e.g. "© 2026 Kevin Sykes".
+    links     (list[dict]): required. Each dict:
+                              {"heading": str, "items": [{"label": str, "href": str}, ...]}
+#}
+{% macro footer(copyright, links) -%}
+<footer class="kysc-footer bg-brand-bg border-t border-brand-muted">
+  <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+    {% if links %}
+    <div class="grid grid-cols-2 md:grid-cols-{{ links|length if links|length <= 4 else 4 }} gap-8">
+      {% for col in links %}
+      <div>
+        <h3 class="text-brand-fg font-semibold mb-3">{{ col.heading }}</h3>
+        <ul class="space-y-2">
+          {% for item in col['items'] %}
+          <li><a href="{{ item.href }}" class="text-brand-fg/70 hover:text-brand-accent">{{ item.label }}</a></li>
+          {% endfor %}
+        </ul>
+      </div>
+      {% endfor %}
+    </div>
+    {% endif %}
+    <div class="mt-8 pt-8 border-t border-brand-muted text-sm text-brand-fg/60">
+      {{ copyright }}
+    </div>
+  </div>
+</footer>
+{%- endmacro %}

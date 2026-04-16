@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "kysc_components"
-version = "0.1.0"
+version = "0.2.0"
 description = "Shared Jinja + Tailwind component blocks for the kevinsykes.ai ecosystem"
 readme = "README.md"
 license = { file = "LICENSE" }
@@ -28,7 +28,7 @@ Issues = "https://github.com/kevinhsykes/kysc-components/issues"
 include = ["kysc_components*"]
 
 [tool.setuptools.package-data]
-kysc_components = ["blocks/*.html"]
+kysc_components = ["blocks/*.html", "tailwind/*.js"]
 
 [tool.ruff]
 line-length = 100
