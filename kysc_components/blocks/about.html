@@ -1,0 +1,32 @@
+{#
+  about block — two-column section with heading, body text, and optional image.
+
+  Args:
+    heading    (str):        required. Section heading.
+    body       (str):        required. HTML-safe body content.
+    image      (str | None): optional. Portrait/photo URL.
+    image_alt  (str):        optional. Alt text for image. Default "".
+    reverse    (bool):       optional. Flip image/text column order. Default False.
+#}
+{% macro about(heading, body, image=None, image_alt="", reverse=False) -%}
+<section class="kysc-about bg-brand-bg py-kysc-section">
+  <div class="max-w-kysc-content mx-auto px-kysc-gutter">
+    {% if image %}
+    <div class="grid md:grid-cols-2 gap-12 items-center">
+      <div class="{% if reverse %}md:order-2{% endif %}">
+        <h2 class="text-3xl font-bold text-brand-fg mb-6">{{ heading }}</h2>
+        <div class="text-brand-fg/80 space-y-4">{{ body }}</div>
+      </div>
+      <div class="{% if reverse %}md:order-1{% endif %}">
+        <img src="{{ image }}" alt="{{ image_alt }}" class="rounded-lg w-full object-cover" loading="lazy">
+      </div>
+    </div>
+    {% else %}
+    <div class="max-w-3xl mx-auto">
+      <h2 class="text-3xl font-bold text-brand-fg mb-6">{{ heading }}</h2>
+      <div class="text-brand-fg/80 space-y-4">{{ body }}</div>
+    </div>
+    {% endif %}
+  </div>
+</section>
+{%- endmacro %}

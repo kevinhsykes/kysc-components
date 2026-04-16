@@ -1,0 +1,24 @@
+{#
+  services block — grid of service cards with optional icons.
+
+  Args:
+    heading  (str):        required. Section heading.
+    items    (list[dict]): required. Each: {"title": str, "description": str, "icon": str|None}.
+    columns  (int):        optional. Grid columns 1-4. Default 3.
+#}
+{% macro services(heading, items, columns=3) -%}
+<section class="kysc-services bg-brand-bg py-kysc-section">
+  <div class="max-w-kysc-content mx-auto px-kysc-gutter">
+    <h2 class="text-3xl font-bold text-brand-fg text-center mb-12">{{ heading }}</h2>
+    <div class="grid gap-8 {{ 'md:grid-cols-1' if columns == 1 else 'md:grid-cols-2' if columns == 2 else 'md:grid-cols-4' if columns == 4 else 'md:grid-cols-3' }}">
+      {% for item in items %}
+      <div class="p-kysc-card rounded-lg border border-brand-muted">
+        {% if item.icon %}<div class="text-brand-accent text-2xl mb-3">{{ item.icon }}</div>{% endif %}
+        <h3 class="text-lg font-semibold text-brand-fg mb-2">{{ item.title }}</h3>
+        <p class="text-brand-fg/70">{{ item.description }}</p>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+{%- endmacro %}

@@ -1,0 +1,25 @@
+{#
+  faq_accordion block — expandable Q&A section using <details>/<summary> (no JS).
+
+  Args:
+    heading  (str):        required. Section heading.
+    items    (list[dict]): required. Each: {"question": str, "answer": str}.
+#}
+{% macro faq_accordion(heading, items) -%}
+<section class="kysc-faq-accordion bg-brand-bg py-kysc-section">
+  <div class="max-w-kysc-content mx-auto px-kysc-gutter">
+    <h2 class="text-3xl font-bold text-brand-fg text-center mb-12">{{ heading }}</h2>
+    <div class="max-w-3xl mx-auto space-y-4">
+      {% for item in items %}
+      <details class="group border border-brand-muted rounded-lg">
+        <summary class="flex items-center justify-between cursor-pointer p-kysc-card text-brand-fg font-medium">
+          {{ item.question }}
+          <span class="ml-2 text-brand-accent transition-transform group-open:rotate-45">+</span>
+        </summary>
+        <div class="px-kysc-card pb-kysc-card text-brand-fg/80">{{ item.answer }}</div>
+      </details>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+{%- endmacro %}

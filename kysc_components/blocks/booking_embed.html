@@ -1,0 +1,25 @@
+{#
+  booking_embed block — iframe embed for Calendly or similar booking widget.
+
+  Args:
+    heading        (str): required. Section heading.
+    url            (str): required. Booking widget URL (e.g. Calendly link).
+    fallback_href  (str): optional. Fallback link if embed blocked. Default "/contact".
+    fallback_text  (str): optional. Fallback link text. Default "Contact us to schedule".
+#}
+{% macro booking_embed(heading, url, fallback_href="/contact", fallback_text="Contact us to schedule") -%}
+<section class="kysc-booking-embed bg-brand-bg py-kysc-section">
+  <div class="max-w-kysc-content mx-auto px-kysc-gutter">
+    <h2 class="text-3xl font-bold text-brand-fg text-center mb-12">{{ heading }}</h2>
+    <div class="max-w-3xl mx-auto">
+      <iframe src="{{ url }}" loading="lazy"
+              class="w-full rounded-lg border border-brand-muted"
+              style="min-height: 660px;"
+              title="{{ heading }}"></iframe>
+      <p class="mt-4 text-center text-sm text-brand-fg/60">
+        <a href="{{ fallback_href }}" class="text-brand-accent hover:underline">{{ fallback_text }}</a>
+      </p>
+    </div>
+  </div>
+</section>
+{%- endmacro %}

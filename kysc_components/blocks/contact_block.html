@@ -1,0 +1,49 @@
+{#
+  contact_block — form section with configurable fields.
+
+  Args:
+    heading      (str):        required. Section heading.
+    fields       (list[dict]): required. Each: {"name": str, "label": str, "type": str,
+                                "required": bool|None, "placeholder": str|None}.
+                                For type="select": add "options": [{"value": str, "label": str}].
+    action       (str):        required. Form action URL.
+    method       (str):        optional. HTTP method. Default "POST".
+    submit_text  (str):        optional. Submit button label. Default "Send".
+#}
+{% macro contact_block(heading, fields, action, method="POST", submit_text="Send") -%}
+<section class="kysc-contact-block bg-brand-bg py-kysc-section">
+  <div class="max-w-kysc-content mx-auto px-kysc-gutter">
+    <h2 class="text-3xl font-bold text-brand-fg text-center mb-12">{{ heading }}</h2>
+    <form action="{{ action }}" method="{{ method }}" class="max-w-xl mx-auto space-y-6">
+      {% for field in fields %}
+      <div>
+        <label for="kysc-{{ field.name }}" class="block text-sm font-medium text-brand-fg mb-1">{{ field.label }}</label>
+        {% if field.type == "textarea" %}
+        <textarea id="kysc-{{ field.name }}" name="{{ field.name }}"
+                  {% if field.placeholder %}placeholder="{{ field.placeholder }}"{% endif %}
+                  {% if field.required %}required{% endif %}
+                  class="w-full rounded-md border border-brand-muted px-3 py-2 text-brand-fg bg-brand-bg focus:border-brand-accent focus:outline-none" rows="4"></textarea>
+        {% elif field.type == "select" %}
+        <select id="kysc-{{ field.name }}" name="{{ field.name }}"
+                {% if field.required %}required{% endif %}
+                class="w-full rounded-md border border-brand-muted px-3 py-2 text-brand-fg bg-brand-bg focus:border-brand-accent focus:outline-none">
+          {% for opt in field.options %}
+          <option value="{{ opt.value }}">{{ opt.label }}</option>
+          {% endfor %}
+        </select>
+        {% else %}
+        <input id="kysc-{{ field.name }}" type="{{ field.type }}" name="{{ field.name }}"
+               {% if field.placeholder %}placeholder="{{ field.placeholder }}"{% endif %}
+               {% if field.required %}required{% endif %}
+               class="w-full rounded-md border border-brand-muted px-3 py-2 text-brand-fg bg-brand-bg focus:border-brand-accent focus:outline-none">
+        {% endif %}
+      </div>
+      {% endfor %}
+      <button type="submit"
+              class="w-full rounded-md bg-brand-accent px-6 py-3 font-medium text-white hover:bg-brand-accent/90">
+        {{ submit_text }}
+      </button>
+    </form>
+  </div>
+</section>
+{%- endmacro %}

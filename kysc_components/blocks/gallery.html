@@ -1,0 +1,25 @@
+{#
+  gallery block — image grid with optional captions and links.
+
+  Args:
+    heading  (str):        required. Section heading.
+    items    (list[dict]): required. Each: {"src": str, "alt": str, "caption": str|None, "href": str|None}.
+    columns  (int):        optional. Grid columns 2-4. Default 3.
+#}
+{% macro gallery(heading, items, columns=3) -%}
+<section class="kysc-gallery bg-brand-bg py-kysc-section">
+  <div class="max-w-kysc-content mx-auto px-kysc-gutter">
+    <h2 class="text-3xl font-bold text-brand-fg text-center mb-12">{{ heading }}</h2>
+    <div class="grid gap-6 {{ 'grid-cols-2' if columns == 2 else 'grid-cols-2 md:grid-cols-4' if columns == 4 else 'grid-cols-2 md:grid-cols-3' }}">
+      {% for item in items %}
+      <figure class="group">
+        {% if item.href %}<a href="{{ item.href }}">{% endif %}
+        <img src="{{ item.src }}" alt="{{ item.alt }}" class="rounded-lg w-full object-cover aspect-square" loading="lazy">
+        {% if item.href %}</a>{% endif %}
+        {% if item.caption %}<figcaption class="mt-2 text-sm text-brand-fg/60">{{ item.caption }}</figcaption>{% endif %}
+      </figure>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+{%- endmacro %}

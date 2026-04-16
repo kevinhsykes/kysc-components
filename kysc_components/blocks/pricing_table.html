@@ -1,0 +1,46 @@
+{#
+  pricing_table block — side-by-side pricing tiers with feature lists.
+
+  Args:
+    heading   (str):         required. Section heading.
+    tiers     (list[dict]):  required. Each: {"name": str, "price": str, "period": str|None,
+                              "features": list[str], "cta_text": str, "cta_href": str,
+                              "highlighted": bool|None}.
+    footnote  (str | None):  optional. Small print below table.
+#}
+{% macro pricing_table(heading, tiers, footnote=None) -%}
+<section class="kysc-pricing-table bg-brand-bg py-kysc-section">
+  <div class="max-w-kysc-content mx-auto px-kysc-gutter">
+    <h2 class="text-3xl font-bold text-brand-fg text-center mb-12">{{ heading }}</h2>
+    <div class="grid gap-8 {{ 'md:grid-cols-2' if tiers|length == 2 else 'md:grid-cols-3' if tiers|length == 3 else 'md:grid-cols-' ~ tiers|length }}">
+      {% for tier in tiers %}
+      <div class="rounded-lg border {{ 'border-brand-accent border-2' if tier.highlighted else 'border-brand-muted' }} p-kysc-card flex flex-col">
+        {% if tier.highlighted %}
+        <div class="text-xs font-semibold text-brand-accent uppercase tracking-wider mb-2">Popular</div>
+        {% endif %}
+        <h3 class="text-xl font-bold text-brand-fg">{{ tier.name }}</h3>
+        <div class="mt-4 mb-6">
+          <span class="text-4xl font-bold text-brand-fg">{{ tier.price }}</span>
+          {% if tier.period %}<span class="text-brand-fg/60 text-sm">{{ tier.period }}</span>{% endif %}
+        </div>
+        <ul class="space-y-3 mb-8 flex-1">
+          {% for feature in tier.features %}
+          <li class="flex items-start gap-2 text-brand-fg/80">
+            <span class="text-brand-accent mt-0.5">&#10003;</span>
+            <span>{{ feature }}</span>
+          </li>
+          {% endfor %}
+        </ul>
+        <a href="{{ tier.cta_href }}"
+           class="block text-center rounded-md px-6 py-3 font-medium {{ 'bg-brand-accent text-white hover:bg-brand-accent/90' if tier.highlighted else 'border border-brand-accent text-brand-accent hover:bg-brand-accent hover:text-white' }}">
+          {{ tier.cta_text }}
+        </a>
+      </div>
+      {% endfor %}
+    </div>
+    {% if footnote %}
+    <p class="mt-8 text-center text-sm text-brand-fg/50">{{ footnote }}</p>
+    {% endif %}
+  </div>
+</section>
+{%- endmacro %}
